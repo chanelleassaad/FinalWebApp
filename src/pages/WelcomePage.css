@@ -1,0 +1,6 @@
+.fullscreen-bg {
+    flex-grow: 1;
+    background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQSLScoaS-HNqf-zTnk5IKAdiusGLw3d9wX_B0E-LyGkw&s');
+    background-size: cover;
+    background-position: center;
+  }
