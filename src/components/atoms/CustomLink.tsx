@@ -1,13 +1,13 @@
-import React, { ReactNode, MouseEvent } from "react";
+import { ReactNode, MouseEvent } from "react";
 import { Link } from "react-router-dom";
 
-interface CustomLinkProps {
+interface ICustomLinkProps {
   to: string;
   children: ReactNode;
-  onClick?: (event: MouseEvent<HTMLAnchorElement>) => void; // Define onClick as optional
+  onClick?: (event: MouseEvent<HTMLAnchorElement>) => void;
 }
 
-const CustomLink = ({ to, children, onClick }: CustomLinkProps) => {
+const CustomLink = ({ to, children, onClick }: ICustomLinkProps) => {
   return (
     <Link
       to={to}

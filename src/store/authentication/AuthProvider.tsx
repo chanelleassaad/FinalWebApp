@@ -3,7 +3,7 @@ import AuthContext from "./AuthContext";
 import authReducer from "./AuthReducer";
 import secureLocalStorage from "react-secure-storage";
 
-interface UserToken {
+export interface IUserToken {
   email: string;
   accessToken: string;
   refreshToken: string;
@@ -12,7 +12,7 @@ interface UserToken {
 interface State {
   isLoading: boolean;
   isSignout: boolean;
-  userToken: UserToken | null;
+  userToken: IUserToken | null;
 }
 
 const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
@@ -52,22 +52,18 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       ) => {
         const token = { email, accessToken, refreshToken };
         await secureLocalStorage.setItem("userToken", token); // Store token as a string
-        dispatch({ type: "SIGN_IN", token, accessToken });
+        dispatch({ type: "SIGN_IN", token });
       },
       signOut: async () => {
         await secureLocalStorage.clear();
         dispatch({ type: "SIGN_OUT" });
       },
       updateAccessToken: async (accessToken: string) => {
-        const { email, refreshToken } = state.userToken as UserToken;
+        const { email, refreshToken } = state.userToken as IUserToken;
         const updatedToken = { email, accessToken, refreshToken };
-        await secureLocalStorage.setItem(
-          "userToken",
-          JSON.stringify(updatedToken)
-        ); // Store updated token as a string
+        await secureLocalStorage.setItem("userToken", updatedToken); // Store updated token as a string
         dispatch({
           type: "UPDATE_ACCESS_TOKEN",
-          token: updatedToken,
           accessToken,
         });
       },
