@@ -1,9 +1,13 @@
 import icon from "../../assets/icon.png";
-import { useLocation, Link } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import { useAuth } from "../../store/authentication/AuthContext";
+import CustomLink from "../atoms/CustomLink";
 
 function Header() {
   const location = useLocation();
   const isLoginPage = location.pathname.includes("login");
+  const isNewsPage = location.pathname.includes("/news");
+  const { signOut } = useAuth();
 
   return (
     <header className="bg-white">
@@ -18,13 +22,13 @@ function Header() {
           <p className="text-lg font-bold leading-6 custom-color">CA NEWS</p>
         </div>
         <div className="lg:flex lg:flex-1 lg:justify-end">
-          {!isLoginPage && (
-            <Link
-              to="canews/login"
-              className="text-sm font-semibold leading-6 text-gray-900"
-            >
-              Log in <span aria-hidden="true">&rarr;</span>
-            </Link>
+          {!isLoginPage && !isNewsPage && (
+            <CustomLink to="canews/login">Log in</CustomLink>
+          )}
+          {isNewsPage && (
+            <CustomLink to="/canews" onClick={signOut}>
+              Log out
+            </CustomLink>
           )}
         </div>
       </div>

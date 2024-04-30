@@ -2,7 +2,7 @@ import axios from "axios";
 
 const baseUrl = "https://backend-practice.euriskomobility.me/";
 
-const api = axios.create({
+export const api = axios.create({
   baseURL: baseUrl,
 });
 

@@ -1,13 +1,17 @@
 import React, { useState } from "react";
 import Input from "../components/molecules/Input";
 import { FormProvider, useForm } from "react-hook-form";
-import { IUser, loginUser, signUpUser } from "../config/BackendApi";
+import { IUser, loginUser, signUpUser } from "../config/UserApi";
 import Alert from "../components/atoms/Alert";
+import { useAuth } from "../store/authentication/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export default function LoginPage() {
   const methods = useForm();
   const [isLogin, setIsLogin] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
+  const { signIn } = useAuth();
+  const navigate = useNavigate();
 
   const onSubmit = methods.handleSubmit(async (data) => {
     const userData: IUser = {
@@ -15,8 +19,13 @@ export default function LoginPage() {
       password: data.password as string,
     };
     try {
-      isLogin ? await loginUser(userData) : await signUpUser(userData);
+      const res = isLogin
+        ? await loginUser(userData)
+        : await signUpUser(userData);
+      const { accessToken, refreshToken } = res;
+      await signIn(userData.email, accessToken, refreshToken);
       setErrorMessage("");
+      navigate("/canews/news");
     } catch (error) {
       error instanceof Error
         ? setErrorMessage(error.message)
