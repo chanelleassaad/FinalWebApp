@@ -1,6 +1,10 @@
 import icon from "../../assets/icon.png";
+import { useLocation, Link } from "react-router-dom";
 
 function Header() {
+  const location = useLocation();
+  const isLoginPage = location.pathname.includes("login");
+
   return (
     <header className="bg-white">
       <div
@@ -11,15 +15,17 @@ function Header() {
           <img className="h-8 w-auto" src={icon} alt="" />
         </div>
         <div className="lg:flex lg:gap-x-12">
-          <p className="text-lg font-bold leading-6 text-blue-900">CA NEWS</p>
+          <p className="text-lg font-bold leading-6 custom-color">CA NEWS</p>
         </div>
         <div className="lg:flex lg:flex-1 lg:justify-end">
-          <a
-            href="canews/login"
-            className="text-sm font-semibold leading-6 text-gray-900"
-          >
-            Log in <span aria-hidden="true">&rarr;</span>
-          </a>
+          {!isLoginPage && (
+            <Link
+              to="canews/login"
+              className="text-sm font-semibold leading-6 text-gray-900"
+            >
+              Log in <span aria-hidden="true">&rarr;</span>
+            </Link>
+          )}
         </div>
       </div>
     </header>
