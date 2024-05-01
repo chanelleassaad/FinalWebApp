@@ -8,7 +8,7 @@ import { Pagination } from "@mui/material";
 import "./NewsPage.style.css";
 import NewsPost from "../components/molecules/NewsPost";
 
-const NewsScreen = () => {
+const NewsPage = () => {
   const dispatch = useDispatch();
   const { posts, loading, error } = useSelector((state: any) => state.posts);
   const { userToken, updateAccessToken } = useAuth();
@@ -58,8 +58,8 @@ const NewsScreen = () => {
             </div>
           )}
           {error && <div className="error-message">Error: {error}</div>}
-          {allPosts.map((post) => (
-            <NewsPost post={post} />
+          {allPosts.map((post, index) => (
+            <NewsPost post={post} key={index} />
           ))}
         </div>
 
@@ -76,4 +76,4 @@ const NewsScreen = () => {
   );
 };
 
-export default NewsScreen;
+export default NewsPage;

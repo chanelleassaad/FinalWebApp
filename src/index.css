@@ -3,10 +3,10 @@
 @tailwind utilities;
 
 .background {
-background-color: #21618C;
-height: 100vh;
+  background-color: #21618c;
+  height: 100vh;
 }
 
 .custom-color {
-  color: #3498DB;
+  color: rgba(37, 100, 235, 1);
 }
