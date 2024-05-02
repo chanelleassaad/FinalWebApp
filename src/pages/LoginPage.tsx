@@ -3,8 +3,8 @@ import Input from "../components/molecules/Input";
 import { FormProvider, useForm } from "react-hook-form";
 import { IUser, loginUser, signUpUser } from "../config/UserApi";
 import Alert from "../components/atoms/Alert";
-import { useAuth } from "../store/authentication/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../store/authentication/AuthContext";
 
 export default function LoginPage() {
   const methods = useForm();

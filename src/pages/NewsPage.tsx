@@ -3,15 +3,16 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getPosts } from "../config/PostsApi";
 import { IResult } from "../data/RootInterface";
-import { useAuth } from "../store/authentication/AuthContext";
 import { Pagination } from "@mui/material";
 import "./NewsPage.style.css";
 import NewsPost from "../components/molecules/NewsPost";
+import { useAuth } from "../store/authentication/AuthContext";
 
 const NewsPage = () => {
   const dispatch = useDispatch();
   const { posts, loading, error } = useSelector((state: any) => state.posts);
-  const { userToken, updateAccessToken } = useAuth();
+  const { userToken } = useSelector((state: any) => state.auth);
+  const { updateAccessToken } = useAuth();
   const [page, setPage] = useState(1);
   const [allPosts, setAllPosts] = useState<IResult[]>([]);
   const [totalPages, setTotalPages] = useState(0);

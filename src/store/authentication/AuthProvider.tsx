@@ -1,47 +1,38 @@
-import React, { useMemo, useReducer, useEffect, useState } from "react";
+import React, { useEffect, useMemo } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import AuthContext from "./AuthContext";
-import authReducer from "./AuthReducer";
 import secureLocalStorage from "react-secure-storage";
-
+import {
+  restoreToken,
+  signIn,
+  signOut,
+  updateAccessToken,
+} from "./AuthReducer";
 export interface IUserToken {
   email: string;
   accessToken: string;
   refreshToken: string;
 }
 
-interface State {
-  isLoading: boolean;
-  isSignout: boolean;
-  userToken: IUserToken | null;
-}
-
-const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
-  const [state, dispatch] = useReducer(authReducer, {
-    isLoading: true,
-    isSignout: false,
-    userToken: null,
-  } as State);
-  const [isLoading, setIsLoading] = useState(true);
+const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+  const dispatch = useDispatch();
+  const { userToken } = useSelector((state: any) => state.auth);
 
   useEffect(() => {
     const bootstrapAsync = async () => {
+      let userToken;
       try {
-        // Retrieve the user token from secure local storage
-        const storedTokenString = await secureLocalStorage.getItem("userToken");
-        if (storedTokenString) {
-          const storedToken = storedTokenString;
-          dispatch({ type: "RESTORE_TOKEN", token: storedToken });
+        const credentials = await secureLocalStorage.getItem("userToken");
+        if (credentials) {
+          userToken = credentials;
         }
       } catch (e) {
-        console.error("Error while fetching user token:", e);
-      } finally {
-        setIsLoading(false);
+        throw e;
       }
+      dispatch(restoreToken(userToken));
     };
     bootstrapAsync();
-  }, []);
+  }, [dispatch]);
 
   const authContext = useMemo(
     () => ({
@@ -52,28 +43,25 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       ) => {
         const token = { email, accessToken, refreshToken };
         await secureLocalStorage.setItem("userToken", token); // Store token as a string
-        dispatch({ type: "SIGN_IN", token });
+        dispatch(signIn(token));
       },
       signOut: async () => {
         await secureLocalStorage.clear();
-        dispatch({ type: "SIGN_OUT" });
+        dispatch(signOut());
       },
       updateAccessToken: async (accessToken: string) => {
-        const { email, refreshToken } = state.userToken as IUserToken;
+        const { email, refreshToken } = userToken;
         const updatedToken = { email, accessToken, refreshToken };
         await secureLocalStorage.setItem("userToken", updatedToken); // Store updated token as a string
-        dispatch({
-          type: "UPDATE_ACCESS_TOKEN",
-          accessToken,
-        });
+
+        dispatch(updateAccessToken(accessToken));
       },
     }),
-    [state.userToken]
+    [dispatch, userToken]
   );
 
-  // Provide loading state along with the context
   return (
-    <AuthContext.Provider value={{ ...state, ...authContext, isLoading }}>
+    <AuthContext.Provider value={{ ...authContext }}>
       {children}
     </AuthContext.Provider>
   );

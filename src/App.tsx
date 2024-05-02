@@ -2,21 +2,21 @@ import { BrowserRouter } from "react-router-dom";
 import "./App.css";
 import Header from "./components/organisms/Header";
 import Router from "./routes/router";
-import AuthProvider from "./store/authentication/AuthProvider";
 import { Provider } from "react-redux";
 import store from "./store/store";
+import AuthProvider from "./store/authentication/AuthProvider";
 
 function App() {
   return (
     <div className="App">
-      <AuthProvider>
-        <Provider store={store}>
+      <Provider store={store}>
+        <AuthProvider>
           <BrowserRouter>
             <Header />
             <Router />
           </BrowserRouter>
-        </Provider>
-      </AuthProvider>
+        </AuthProvider>
+      </Provider>
     </div>
   );
 }
