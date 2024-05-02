@@ -14,11 +14,11 @@ const Router = () => {
     if (isLoading) return; // Wait until token loading is complete
 
     if (!userToken) {
-      navigate("/canews/login", { replace: true }); // Redirect to login page if not authenticated
+      navigate("/canews", { replace: true }); // Redirect to login page if not authenticated
     } else if (window.location.pathname !== "/canews") {
       navigate("/canews/news", { replace: true }); // Redirect to news page if authenticated and not on /canews
     }
-  }, [userToken, isLoading, navigate]);
+  }, [userToken, isLoading]);
 
   return (
     <Routes>
