@@ -4,6 +4,7 @@
   padding: 10px;
   margin-bottom: 10px;
   transition: transform 0.3s;
+  min-height: 15%;
 }
 
 .post-container.enlarged {

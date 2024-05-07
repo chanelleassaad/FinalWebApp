@@ -28,15 +28,19 @@ const NewsPost: React.FC<Props> = ({ post }) => {
         className={`post-container bg-white ${isHovered ? "enlarged" : ""}`}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
-        onClick={() => handleOpen(post)} // Pass a function to onClick
+        onClick={() => handleOpen(post)}
       >
         <div className="flex items-center">
-          {post.image_url ? (
+          {post.image_url && (
             <img src={post.image_url} alt="" className="post-image" />
-          ) : (
+          )}
+          {!post.image_url && post.source_icon && (
             <img src={post.source_icon} alt="" className="post-image" />
           )}
-          <div className="flex flex-col" style={{ width: "93%" }}>
+          <div
+            className="flex flex-col"
+            style={{ width: "93%", flex: "auto", justifyContent: "flex-end" }}
+          >
             <div className="flex justify-between">
               <div className="post-title">{post.title}</div>
               <div className="post-date">
