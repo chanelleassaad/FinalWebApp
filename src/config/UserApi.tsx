@@ -1,9 +1,7 @@
 import axios from "axios";
 
-const baseUrl = "https://backend-practice.euriskomobility.me/";
-
 export const api = axios.create({
-  baseURL: baseUrl,
+  baseURL: process.env.REACT_APP_API_URL,
 });
 
 export interface IUser {

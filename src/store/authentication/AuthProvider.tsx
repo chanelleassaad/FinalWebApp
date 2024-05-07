@@ -50,8 +50,8 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         dispatch(signOut());
       },
       updateAccessToken: async (accessToken: string) => {
-        const { email, refreshToken } = userToken;
-        const updatedToken = { email, accessToken, refreshToken };
+        const { refreshToken } = userToken;
+        const updatedToken = { accessToken, refreshToken };
         await secureLocalStorage.setItem("userToken", updatedToken); // Store updated token as a string
 
         dispatch(updateAccessToken(accessToken));
